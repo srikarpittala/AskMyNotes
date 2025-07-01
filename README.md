@@ -39,6 +39,14 @@ The goal is to allow users — especially students and professionals — to inte
 
 ---
 
+## ⚠️ First-Time Run Note
+
+When running the app for the first time, the model and tokenizer may take a few extra seconds to load. If an error appears (like `AutoTokenizer` or `model` not found), just refresh or re-run the app — it will work fine after initial caching.
+
+This is normal behavior due to initial local model loading and caching.
+
+---
+
 ## 🔧 Technologies Used
 
 | Component            | Tech Used                                        |
