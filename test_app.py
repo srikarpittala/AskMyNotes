@@ -61,7 +61,7 @@ if uploaded_file is not None:
         question = st.text_input("❓ Ask a question about your document:")
 
         if question:
-            SIMILARITY_THRESHOLD = 1.4 # You might need to tune this threshold based on your data and desired recall
+            SIMILARITY_THRESHOLD = 1.4 
             docs_with_scores = store.similarity_search_with_score(question, k=7)
             relevant_docs = [doc for doc, score in docs_with_scores if score <= SIMILARITY_THRESHOLD]
 
@@ -86,28 +86,28 @@ Question: {question}
 
 Answer:"""
 
-                # Removed the 'stop_sequence' parameter as it was causing the TypeError.
-                # We will rely on 'max_new_tokens' and robust post-processing.
+                
+                
                 output = gen_pipeline(
                     prompt,
-                    max_new_tokens=200, # Keep this at a reasonable level (e.g., 150-250)
-                                        # to allow for complete answers without excessive rambling.
+                    max_new_tokens=200, 
+                                        
                     do_sample=False,
                 )[0]["generated_text"]
 
                 # Post-processing the generated text
-                # 1. Remove the initial prompt echoed by the model
+                
                 answer_only = output.replace(prompt, "").strip()
 
-                # 2. Further clean up any unwanted patterns that might still be present
-                # This is crucial for models that tend to generate extra conversational turns
+                
+                
                 unwanted_patterns = ["\nQuestion:", "Document Context:", "Answer:", "Question:"]
                 for pattern in unwanted_patterns:
                     if pattern in answer_only:
-                        # Split at the first occurrence of the unwanted pattern and take the part before it
+                        
                         answer_only = answer_only.split(pattern, 1)[0].strip()
 
-                # 3. Filter for unique and non-empty lines
+                
                 lines = answer_only.split('\n')
                 unique_lines = []
                 for line in lines:
@@ -117,7 +117,7 @@ Answer:"""
 
                 final_answer = "\n".join(unique_lines)
 
-                # 4. Remove a leading "Answer:" if the model echoed it at the very beginning
+                
                 if final_answer.lower().startswith("answer:"):
                     final_answer = final_answer[len("answer:"):].strip()
 
